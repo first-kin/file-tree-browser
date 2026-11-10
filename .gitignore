@@ -1,0 +1,28 @@
+# C++ 构建产物
+build/
+out/
+cmake-build-*/
+*.exe
+*.obj
+*.pdb
+*.ilk
+CMakeCache.txt
+CMakeFiles/
+
+# 前端依赖与构建产物
+web/node_modules/
+web/dist/
+web/.vite/
+
+# IDE
+.vscode/
+.idea/
+*.user
+*.sln
+
+# 本地私有配置
+.env.local
+.env.*.local
+
+# 临时文件
+_tmp/
