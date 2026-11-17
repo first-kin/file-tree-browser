@@ -28,11 +28,19 @@ TreeNode::TreeNode(const string& n, bool d)
 {
 }
 
-// 析构函数：递归删除 firstChild 子树
-// 注意：不删除 nextSibling，由父节点的 firstChild 链统一管理，避免重复释放
+// 析构函数：递归删除整棵子树
+// 逐个摘下 firstChild 链上的孩子再 delete，确保每个孩子的 nextSibling 先断开，
+// 既不漏删兄弟节点，也不会通过 nextSibling 反向重复释放。
 TreeNode::~TreeNode()
 {
-    delete firstChild;
+    TreeNode* child = firstChild;
+    while (child != nullptr)
+    {
+        TreeNode* next = child->nextSibling;
+        child->nextSibling = nullptr;
+        delete child;
+        child = next;
+    }
     firstChild = nullptr;
 }
 
