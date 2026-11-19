@@ -13,7 +13,7 @@ export interface ResultColumn<TRow extends Record<string, unknown> = Record<stri
 
 const props = withDefaults(defineProps<{
   rows: TRow[]
-  columns: ResultColumn<TRow>[]
+  columns: readonly ResultColumn<TRow>[]
   loading?: boolean
   page?: number
   pageSize?: number
