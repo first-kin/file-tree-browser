@@ -19,7 +19,11 @@
     "custom_config": {
       "data_path": "../data/users.dat",
       "session_timeout_minutes": 30,
-      "max_scan_depth": 512
+      "max_scan_depth": 512,
+      "allowed_scan_roots": [
+        "C:/TestWorkspace",
+        "D:/FileTreeDemo"
+      ]
     }
   }
 }
