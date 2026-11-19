@@ -36,7 +36,10 @@ async function submit() {
       const session = await login(form)
       user.setSession(session)
       ElMessage.success(`欢迎回来，${session.username}`)
-      const redirect = typeof route.query.redirect === 'string' ? route.query.redirect : '/tree'
+      const requestedRedirect = typeof route.query.redirect === 'string' ? route.query.redirect : ''
+      const redirect = requestedRedirect.startsWith('/') && !requestedRedirect.startsWith('//')
+        ? requestedRedirect
+        : '/tree'
       await router.replace(redirect)
     } catch { /* 错误由统一请求层提示 */ } finally {
       loading.value = false

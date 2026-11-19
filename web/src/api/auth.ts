@@ -7,7 +7,7 @@ export interface UserRecord {
   username: string
   role: UserRole
   enabled: boolean
-  lastLoginAt?: string
+  lastLoginAt?: number
 }
 
 export interface LoginPayload {

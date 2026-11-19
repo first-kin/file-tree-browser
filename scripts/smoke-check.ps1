@@ -1,10 +1,10 @@
-# AI-generated. The submitter must review this script before marking it as manually reviewed.
+# AI-generated; submitter manual review is required before delivery.
 param(
     [string]$BaseUrl = 'http://127.0.0.1:8080'
 )
 
 $ErrorActionPreference = 'Stop'
-$routes = @('/', '/tree', '/search', '/stats')
+$routes = @('/', '/login', '/register', '/tree', '/search', '/stats', '/users', '/merkle', '/graph')
 $failures = @()
 
 foreach ($route in $routes) {

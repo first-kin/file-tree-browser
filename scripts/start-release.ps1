@@ -1,4 +1,4 @@
-# AI-generated. The submitter must review this script before marking it as manually reviewed.
+# AI-generated; submitter manual review is required before delivery.
 param(
     [ValidateSet('Debug', 'Release')]
     [string]$Configuration = 'Release',
@@ -9,7 +9,11 @@ $ErrorActionPreference = 'Stop'
 $repoRoot = Split-Path -Parent $PSScriptRoot
 $webRoot = Join-Path $repoRoot 'web'
 $serverRoot = Join-Path $repoRoot 'server'
-$serverExe = Join-Path $repoRoot "build\$Configuration\dir_tree_server.exe"
+$serverCandidates = @(
+    (Join-Path $repoRoot "build\$Configuration\dir_tree_server.exe"),
+    (Join-Path $repoRoot 'build\dir_tree_server.exe')
+)
+$serverExe = $serverCandidates | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
 $indexFile = Join-Path $webRoot 'dist\index.html'
 
 if (-not $SkipFrontendBuild) {
@@ -28,8 +32,8 @@ if (-not (Test-Path -LiteralPath $indexFile)) {
     throw "Missing frontend production file: $indexFile"
 }
 
-if (-not (Test-Path -LiteralPath $serverExe)) {
-    throw "Missing server executable: $serverExe. Build the CMake $Configuration target first."
+if (-not $serverExe) {
+    throw "Missing server executable. Checked: $($serverCandidates -join ', '). Build the CMake $Configuration target first."
 }
 
 Start-Process -FilePath $serverExe -WorkingDirectory $serverRoot -WindowStyle Hidden

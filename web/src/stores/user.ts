@@ -10,6 +10,7 @@ export interface UserSession {
   username: string
   role: UserRole
   expiresIn?: number
+  expiresAt?: number
 }
 
 const STORAGE_KEY = 'dir-tree-session'
@@ -19,6 +20,7 @@ export const useUserStore = defineStore('user', () => {
   const username = ref('')
   const role = ref<UserRole>('GUEST')
   const expiresIn = ref<number | undefined>()
+  const expiresAt = ref<number | undefined>()
   const restored = ref(false)
 
   const isLoggedIn = computed(() => Boolean(token.value))
@@ -27,11 +29,14 @@ export const useUserStore = defineStore('user', () => {
   const initials = computed(() => username.value.trim().slice(0, 2).toUpperCase() || 'GU')
 
   function setSession(session: UserSession) {
+    const absoluteExpiry = session.expiresAt
+      ?? (session.expiresIn ? Date.now() + session.expiresIn * 1000 : undefined)
     token.value = session.token
     username.value = session.username
     role.value = session.role
     expiresIn.value = session.expiresIn
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(session))
+    expiresAt.value = absoluteExpiry
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...session, expiresAt: absoluteExpiry }))
   }
 
   function restore() {
@@ -41,11 +46,16 @@ export const useUserStore = defineStore('user', () => {
       const raw = localStorage.getItem(STORAGE_KEY)
       if (!raw) return
       const session = JSON.parse(raw) as Partial<UserSession>
+      if (session.expiresAt && Date.now() >= session.expiresAt) {
+        clearSession()
+        return
+      }
       if (session.token && session.username && session.role) {
         token.value = session.token
         username.value = session.username
         role.value = session.role
         expiresIn.value = session.expiresIn
+        expiresAt.value = session.expiresAt
       }
     } catch {
       clearSession()
@@ -57,6 +67,7 @@ export const useUserStore = defineStore('user', () => {
     username.value = ''
     role.value = 'GUEST'
     expiresIn.value = undefined
+    expiresAt.value = undefined
     localStorage.removeItem(STORAGE_KEY)
   }
 
@@ -65,6 +76,7 @@ export const useUserStore = defineStore('user', () => {
     username,
     role,
     expiresIn,
+    expiresAt,
     isLoggedIn,
     isAdmin,
     displayRole,

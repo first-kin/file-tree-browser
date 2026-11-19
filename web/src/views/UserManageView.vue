@@ -30,6 +30,15 @@ const pagedUsers = computed(() => filteredUsers.value.slice((page.value - 1) * p
 const activeCount = computed(() => users.value.filter((item) => item.enabled).length)
 const adminCount = computed(() => users.value.filter((item) => item.role === 'ADMIN').length)
 const roleLabel = (role: UserRole) => ({ ADMIN: '管理员', USER: '普通用户', GUEST: '访客' })[role]
+const formatLastLogin = (timestamp?: number) => {
+  if (!timestamp) return '尚未登录'
+  const date = new Date(timestamp * 1000)
+  if (Number.isNaN(date.getTime())) return '时间未知'
+  return new Intl.DateTimeFormat('zh-CN', {
+    year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit', hour12: false
+  }).format(date)
+}
 
 function resetPage() {
   page.value = 1
@@ -138,7 +147,7 @@ onMounted(loadUsers)
             <tr v-for="item in pagedUsers" :key="item.username">
               <td><div class="member-identity"><span class="member-avatar" :class="item.role.toLowerCase()">{{ item.username.slice(0, 2).toUpperCase() }}</span><div><strong>{{ item.username }}</strong><small>{{ item.username === currentUser.username ? '这是你当前的账号' : '工作区成员' }}</small></div></div></td>
               <td><select class="role-select" :value="item.role" :disabled="item.username === currentUser.username || saving === item.username" @change="updateRole(item, ($event.target as HTMLSelectElement).value as UserRole, $event.target as HTMLSelectElement)"><option value="ADMIN">管理员</option><option value="USER">普通用户</option><option value="GUEST">访客</option></select></td>
-              <td><span class="last-login">{{ item.lastLoginAt || '尚未登录' }}</span></td>
+              <td><span class="last-login">{{ formatLastLogin(item.lastLoginAt) }}</span></td>
               <td><span class="status-pill" :class="item.enabled ? 'online' : 'offline'"><i></i>{{ item.enabled ? '已启用' : '已停用' }}</span></td>
               <td class="align-right"><div class="row-actions"><button type="button" class="text-action" @click="openReset(item)">重置密码</button><button type="button" class="text-action" :class="{ danger: item.enabled }" :disabled="item.username === currentUser.username || saving === item.username" @click="confirmDisable(item)">{{ item.enabled ? '停用' : '启用' }}</button></div></td>
             </tr>
