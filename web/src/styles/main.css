@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap');
 
+/* AI生成，需提交者人工审查后将本注释改为“AI生成，已手动审查修改”。 */
+
 :root {
   color-scheme: dark;
   font-family: Manrope, "Microsoft YaHei UI", "PingFang SC", sans-serif;
@@ -89,6 +91,7 @@ a { color: inherit; text-decoration: none; }
 .auth-switch a { color: #c9ded5; font-weight: 700; }
 .auth-switch a:hover { color: var(--accent); }
 .auth-switch b { margin-left: 3px; color: var(--accent-2); }
+.guest-entry { margin-top: 10px; }
 .security-note { display: flex; gap: 13px; margin-top: 45px; padding: 16px 17px; border: 1px solid var(--line); border-radius: 3px; background: rgba(16, 29, 26, .55); }
 .security-note > span { color: var(--accent-2); font: 500 18px DM Mono, monospace; }
 .security-note p { display: flex; flex-direction: column; gap: 3px; margin: 0; }
@@ -241,6 +244,43 @@ a { color: inherit; text-decoration: none; }
 .page-enter-active, .page-leave-active { transition: opacity .18s ease, transform .18s ease; }
 .page-enter-from { opacity: 0; transform: translateY(8px); }
 .page-leave-to { opacity: 0; transform: translateY(-5px); }
+.page-heading-actions { display: flex; align-items: center; gap: 8px; }
+.user-identity { display: flex; align-items: center; gap: 11px; }
+.user-identity > div { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+.user-identity strong { color: #c7d8d0; font-size: 10px; font-weight: 600; }
+.user-identity small { color: #5d7569; font: 500 8px DM Mono, monospace; }
+.account-action { border: 0; padding: 6px; color: #71877d; background: transparent; cursor: pointer; font-size: 9px; }
+.account-action:hover { color: var(--accent); }
+.login-link { color: var(--accent); font: 600 10px DM Mono, monospace; letter-spacing: .4px; }
+.login-link b { margin-left: 4px; font-size: 14px; }
+.member-pagination { justify-content: flex-end; padding: 16px 27px 18px; background: transparent; }
+.member-pagination .el-pagination__total, .member-pagination .el-pagination__jump { color: #61766d; font-size: 10px; }
+.member-pagination button, .member-pagination .el-pager li { color: #82978d; background: #12221c; }
+.member-pagination .el-pager li.is-active { color: #07120e; background: var(--accent); }
+.password-dialog-fields { display: grid; gap: 11px; }
+.p2-page { display: grid; gap: 16px; }
+.p2-card { overflow: hidden; }
+.p2-form-row, .p2-form-grid { display: grid; gap: 10px; padding: 24px 27px; }
+.p2-form-row { grid-template-columns: 1fr auto; align-items: center; }
+.p2-form-grid { grid-template-columns: 1fr 1fr; }
+.p2-form-row .el-input__wrapper, .p2-form-grid .el-input__wrapper { min-height: 40px; border: 1px solid var(--line); background: #091410; box-shadow: none; }
+.p2-form-row .el-input__inner, .p2-form-grid .el-input__inner { color: #cbd9d3; font-size: 11px; }
+.p2-result { display: flex; align-items: center; gap: 14px; padding: 15px 27px; border-top: 1px solid var(--line); background: rgba(157, 245, 199, .025); }
+.p2-result > span { color: #527064; font: 500 8px DM Mono, monospace; letter-spacing: 1.2px; }
+.p2-result code, .p2-diff-result code, .p2-cycle-list code { color: var(--accent); font: 400 10px DM Mono, monospace; word-break: break-all; }
+.p2-result code { flex: 1; }
+.p2-submit { width: calc(100% - 54px); margin: 0 27px 24px; }
+.p2-submit i { margin-left: auto; }
+.p2-diff-result { margin: 0 27px 24px; padding: 15px; border: 1px solid var(--line); color: #b9cec3; font-size: 11px; }
+.p2-diff-result ul, .p2-cycle-list ul { display: grid; gap: 8px; margin: 13px 0 0; padding: 0; list-style: none; }
+.p2-diff-result li, .p2-cycle-list li { display: flex; align-items: center; gap: 8px; padding: 9px 0; border-bottom: 1px solid rgba(213, 235, 226, .07); }
+.p2-diff-result li .text-action, .p2-cycle-list li .text-action { margin-left: auto; }
+.p2-metrics { grid-template-columns: repeat(3, 1fr); margin: 0; padding: 24px 27px 0; }
+.p2-metrics .metric-card { min-height: 106px; }
+.p2-cycle-list { padding: 0 27px 24px; }
+.p2-cycle-list > .empty-state { padding: 34px; }
+.p2-cycle-list li > span { width: 24px; color: #5e786b; font: 500 9px DM Mono, monospace; }
+.p2-cycle-list li code { flex: 1; color: #bcd8ca; }
 
 @media (max-width: 1100px) {
   .auth-page { grid-template-columns: .8fr 1fr; }
@@ -277,6 +317,15 @@ a { color: inherit; text-decoration: none; }
   .member-table th, .member-table td { padding: 0 17px; }
   .table-foot { padding: 13px 17px; }
   .table-foot span { display: none; }
+  .user-identity > div { display: none; }
+  .account-action { display: none; }
+  .page-heading-actions { width: 100%; }
+  .page-heading-actions .ghost-button { flex: 1; }
+  .p2-form-row, .p2-form-grid { grid-template-columns: 1fr; padding: 20px; }
+  .p2-submit { width: calc(100% - 40px); margin: 0 20px 20px; }
+  .p2-diff-result, .p2-cycle-list { margin-left: 20px; margin-right: 20px; padding-left: 0; padding-right: 0; }
+  .p2-metrics { grid-template-columns: 1fr 1fr; padding: 20px 20px 0; }
+  .member-pagination { justify-content: flex-start; padding: 14px 17px; overflow-x: auto; }
 }
 
 @media (prefers-reduced-motion: reduce) {

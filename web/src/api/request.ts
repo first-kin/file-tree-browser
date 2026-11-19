@@ -3,6 +3,8 @@ import { ElMessage } from 'element-plus'
 import { useUserStore } from '@/stores/user'
 import router from '@/router'
 
+// AI生成，需提交者人工审查后将本注释改为“AI生成，已手动审查修改”。
+
 export interface ApiResponse<T = unknown> {
   code: number
   message: string
@@ -10,7 +12,7 @@ export interface ApiResponse<T = unknown> {
 }
 
 export const http = axios.create({
-  baseURL: '/',
+  baseURL: import.meta.env.VITE_API_BASE || '/api',
   timeout: 12_000,
   headers: { 'Content-Type': 'application/json' }
 })
@@ -26,6 +28,7 @@ http.interceptors.response.use(
   (response) => {
     const payload = response.data as Partial<ApiResponse>
     if (typeof payload.code === 'number' && payload.code !== 0) {
+      const message = payload.message || '请求失败'
       if (payload.code === -11) {
         const user = useUserStore()
         user.clearSession()
@@ -33,7 +36,8 @@ http.interceptors.response.use(
           void router.push({ path: '/login', query: { redirect: router.currentRoute.value.fullPath } })
         }
       }
-      return Promise.reject(new Error(payload.message || '请求失败'))
+      ElMessage.error(message)
+      return Promise.reject(new Error(message))
     }
     return response
   },

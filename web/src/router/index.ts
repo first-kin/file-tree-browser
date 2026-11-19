@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import { useUserStore, type UserRole } from '@/stores/user'
 
+// AI生成，需提交者人工审查后将本注释改为“AI生成，已手动审查修改”。
+
 const routes: RouteRecordRaw[] = [
   {
     path: '/login',
@@ -17,15 +19,14 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: () => import('@/layouts/MainLayout.vue'),
-    meta: { requiresAuth: true },
     children: [
       { path: '', redirect: '/tree' },
       { path: 'tree', name: 'tree', component: () => import('@/views/TreeView.vue'), meta: { label: '目录空间' } },
       { path: 'search', name: 'search', component: () => import('@/views/SearchView.vue'), meta: { label: '智能查找' } },
       { path: 'stats', name: 'stats', component: () => import('@/views/StatsView.vue'), meta: { label: '数据洞察' } },
-      { path: 'users', name: 'users', component: () => import('@/views/UserManageView.vue'), meta: { label: '成员权限', roles: ['ADMIN'] as UserRole[] } },
-      { path: 'merkle', name: 'merkle', component: () => import('@/views/P2View.vue'), meta: { label: '完整性校验', roles: ['ADMIN'] as UserRole[] } },
-      { path: 'graph', name: 'graph', component: () => import('@/views/P2View.vue'), meta: { label: '环路检测', roles: ['ADMIN'] as UserRole[] } }
+      { path: 'users', name: 'users', component: () => import('@/views/UserManageView.vue'), meta: { label: '成员权限', requiresAuth: true, roles: ['ADMIN'] as UserRole[] } },
+      { path: 'merkle', name: 'merkle', component: () => import('@/views/P2View.vue'), meta: { label: '完整性校验', requiresAuth: true, roles: ['ADMIN'] as UserRole[] } },
+      { path: 'graph', name: 'graph', component: () => import('@/views/P2View.vue'), meta: { label: '环路检测', requiresAuth: true, roles: ['ADMIN'] as UserRole[] } }
     ]
   },
   { path: '/:pathMatch(.*)*', redirect: '/' }

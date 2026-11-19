@@ -6,6 +6,8 @@ import { useRoute, useRouter } from 'vue-router'
 import { login } from '@/api/auth'
 import { useUserStore } from '@/stores/user'
 
+// AI生成，需提交者人工审查后将本注释改为“AI生成，已手动审查修改”。
+
 const route = useRoute()
 const router = useRouter()
 const user = useUserStore()
@@ -36,9 +38,7 @@ async function submit() {
       ElMessage.success(`欢迎回来，${session.username}`)
       const redirect = typeof route.query.redirect === 'string' ? route.query.redirect : '/tree'
       await router.replace(redirect)
-    } catch (error) {
-      ElMessage.error(error instanceof Error ? error.message : '登录失败，请检查账号信息')
-    } finally {
+    } catch { /* 错误由统一请求层提示 */ } finally {
       loading.value = false
     }
   })
@@ -91,7 +91,8 @@ async function submit() {
         </el-form>
 
         <div class="auth-switch"><span>还没有账号？</span><router-link to="/register">创建新账号 <b>→</b></router-link></div>
-        <div class="security-note"><span>◇</span><p><b>安全连接</b><small>凭据经过加密传输，我们不会存储明文密码。</small></p></div>
+        <div class="auth-switch guest-entry"><span>暂不登录？</span><router-link to="/tree">以访客身份只读浏览 <b>→</b></router-link></div>
+        <div class="security-note"><span>◇</span><p><b>安全提示</b><small>系统仅保存服务端生成的会话标识，不在浏览器保存明文密码。</small></p></div>
       </div>
     </section>
   </div>

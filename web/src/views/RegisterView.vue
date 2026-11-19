@@ -5,6 +5,8 @@ import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
 import { register } from '@/api/auth'
 
+// AI生成，需提交者人工审查后将本注释改为“AI生成，已手动审查修改”。
+
 const router = useRouter()
 const formRef = ref<FormInstance>()
 const loading = ref(false)
@@ -49,9 +51,7 @@ async function submit() {
       await register({ username: form.username, password: form.password })
       ElMessage.success('账号创建成功，请登录')
       await router.replace('/login')
-    } catch (error) {
-      ElMessage.error(error instanceof Error ? error.message : '注册失败，请稍后重试')
-    } finally {
+    } catch { /* 错误由统一请求层提示 */ } finally {
       loading.value = false
     }
   })
