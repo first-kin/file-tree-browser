@@ -49,7 +49,7 @@ cmake --build build --config Release
 cd web && npm install && npm run dev
 ```
 
-前端生产构建：`cd web && npm run build`，产物在 `web/dist`，可由 Drogon 的 `document_root` 直接托管。
+前端生产构建：`cd web && npm run build && npm run verify:dist`，产物在 `web/dist`，可由 Drogon 的 `document_root` 直接托管。完整部署和冒烟检查步骤见 `docs/前端构建与部署说明.md`。
 
 ## 5. 文档
 
