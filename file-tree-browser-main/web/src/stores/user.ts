@@ -1,0 +1,2 @@
+import { defineStore } from 'pinia'
+export const useUserStore=defineStore('user',{state:()=>({username:localStorage.getItem('ftb_user')||'',role:localStorage.getItem('ftb_role')||''}),getters:{isAdmin:s=>s.role==='ADMIN'},actions:setUser(u:any){this.username=u.username;this.role=u.role;localStorage.setItem('ftb_user',u.username);localStorage.setItem('ftb_role',u.role)},clear(){this.username='';this.role='';localStorage.removeItem('ftb_user');localStorage.removeItem('ftb_role');localStorage.removeItem('ftb_token')}})
