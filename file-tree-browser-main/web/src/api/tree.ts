@@ -1,2 +1,0 @@
-import { http } from './request'
-export const treeApi = { get: (params:object={})=>http.get('/tree',{params}), traverse:(params:object)=>http.post('/tree/traverse',params), create:(data:object)=>http.post('/nodes',data), remove:(data:object)=>http.delete('/nodes',{data}), rename:(data:object)=>http.put('/nodes/rename',data), move:(data:object)=>http.post('/nodes/move',data), copy:(data:object)=>http.post('/nodes/copy',data), undo:()=>http.post('/operations/undo') }
